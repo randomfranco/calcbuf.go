@@ -2,14 +2,14 @@ package main
 
 import "math"
 
-const EpleyConst = .0333333
-const RoundWeightFactor = 2.5 // kgs
+const epleyConst = .0333333
+const roundWeightFactor = 2.5 // kgs
 
-func RoundWeight(carico float64) float64 {
-	return math.Round(carico/RoundWeightFactor) * RoundWeightFactor
+func roundWeight(carico float64) float64 {
+	return math.Round(carico/roundWeightFactor) * roundWeightFactor
 	}
 
-func Perc(full, peso float64) float64 {
+func perc(full, peso float64) float64 {
 	return math.Round(peso/full * 100)
 	}
 
@@ -20,15 +20,15 @@ type CalcBuf struct {
 	}
 
 func OneRepFurther(carico float64) float64 {
-	return carico * EpleyConst
+	return carico * epleyConst
 	}
 
 func EpleyOneRm(rep int, carico float64) float64 {
-	return ((EpleyConst * float64(rep)) + 1) * carico
+	return ((epleyConst * float64(rep)) + 1) * carico
 	}
 
 func EpleyReverseOneRm(rep int, carico float64) float64 {
-	return carico / ((EpleyConst * float64(rep)) + 1)
+	return carico / ((epleyConst * float64(rep)) + 1)
 	}
 
 func (cb *CalcBuf) CalculateBufferSeries(oneRepMax float64, buffer int, repRange []int) map[string]interface{} {
@@ -39,14 +39,14 @@ func (cb *CalcBuf) CalculateBufferSeries(oneRepMax float64, buffer int, repRange
 	data := make(map[string]interface{})
 	data["buffer"] = buffer
 	data["1rm"] = oneRepMax
-	data["rep_in_kg"] = RoundWeight(OneRepFurther(oneRepMax))
+	data["rep_in_kg"] = roundWeight(OneRepFurther(oneRepMax))
 	bufferSeries := make([]map[string]interface{}, 0)
 
 	for _, reps := range repRange {
 		bufferSerie := make(map[string]interface{})
 		bufferSerie["rep"] = reps
-		bufferSerie["peso"] = RoundWeight(EpleyReverseOneRm(reps+buffer, oneRepMax))
-		bufferSerie["perc"] = Perc(oneRepMax, bufferSerie["peso"].(float64))
+		bufferSerie["peso"] = roundWeight(EpleyReverseOneRm(reps+buffer, oneRepMax))
+		bufferSerie["perc"] = perc(oneRepMax, bufferSerie["peso"].(float64))
 		bufferSeries = append(bufferSeries, bufferSerie)
 		}
 
