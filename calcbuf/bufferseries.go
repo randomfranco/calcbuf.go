@@ -1,7 +1,7 @@
 package main
 
 // create a map of possible buffer series on RM
-func (cb *CalcBuf) RMBufferSeries(oneRepMax float64, buffer int, repRange []int) map[string]interface{} {
+func (cb CalcBuf) RMBufferSeries(oneRepMax float64, buffer int, repRange []int) map[string]interface{} {
 	if len(repRange) == 0 {
 	repRange = []int{2,3,4,5,6,7,8,9,10,11,12}
 	}
