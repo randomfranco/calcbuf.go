@@ -5,10 +5,14 @@ import "math"
 const epleyConst = .0333333
 const roundWeightFactor = 2.5 // kgs
 
+type rep_t	uint8
+
+// converted to this for json
 type CalcBuf struct {
-	OneRepMax	float64
-	Buffer		int
-	}
+	OneRepMax	float64		`json:"onerepmax"`
+	BufferRep	rep_t		`json:"bufferrep"`
+	RepRange	[]rep_t		`json:"reprange"`
+}
 
 func roundWeight(carico float64) float64 {
 	return math.Round(carico/roundWeightFactor) * roundWeightFactor
@@ -22,10 +26,10 @@ func OneRepFurther(carico float64) float64 {
 	return carico * epleyConst
 	}
 
-func EpleyOneRm(rep int, carico float64) float64 {
+func EpleyOneRm(rep rep_t, carico float64) float64 {
 	return ((epleyConst * float64(rep)) + 1) * carico
 	}
 
-func EpleyReverseOneRm(rep int, carico float64) float64 {
+func EpleyReverseOneRm(rep rep_t, carico float64) float64 {
 	return carico / ((epleyConst * float64(rep)) + 1)
 	}
